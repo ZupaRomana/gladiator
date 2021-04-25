@@ -14,7 +14,8 @@ public class GladiatorFactory {
 
     public GladiatorFactory(String fileOfNames) {
         try {
-            File file = new File(getClass().getClassLoader().getResource(fileOfNames).getFile());
+            String shortPath = "src/main/resources/Names.txt";
+            File file = new File(shortPath);
             names = Files.readAllLines(file.toPath());
         } catch (IOException|NullPointerException e) {
             System.out.println("Names file not found or corrupted!");

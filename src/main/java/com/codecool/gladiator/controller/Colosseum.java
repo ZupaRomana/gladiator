@@ -41,19 +41,38 @@ public class Colosseum {
 
     private List<Gladiator> generateGladiators(int numberOfGladiators) {
         List<Gladiator> gladiators = new ArrayList<>();
-        // Todo
+
+        for(int i  = 0; i < numberOfGladiators; i++){
+            gladiators.add(gladiatorFactory.generateRandomGladiator());
+        }
+
         introduceGladiators(gladiators);
         return gladiators;
     }
 
     private List<Contestants> splitGladiatorsIntoPairs(List<Gladiator> gladiators) {
-        // Todo
-        return new LinkedList<>();
+        LinkedList<Contestants> contestants = new LinkedList<>();
+
+        int sizeGladiatorsList = gladiators.size();
+
+        for( int i = 0; i< sizeGladiatorsList; i += 2){
+            contestants.add(new Contestants(gladiators.get(i), gladiators.get(i+1)));
+        }
+
+        return contestants;
     }
 
     private Gladiator getChampion(Tournament tournament) {
-        // Todo - call simulateCombat as many times as needed
-        return null;
+
+        if(tournament.getContestants() == null){
+            Gladiator winnerFromLeftBranch = this.getChampion(tournament.getLeftBranch());
+            Gladiator winnerFromRightBranch = this.getChampion(tournament.getRightBranch());
+
+            Contestants contestants = new Contestants(winnerFromLeftBranch, winnerFromRightBranch);
+
+            tournament.setContestants(contestants);
+        }
+        return simulateCombat(new Combat(tournament.getContestants()));
     }
 
     private Gladiator simulateCombat(Combat combat) {
@@ -61,11 +80,13 @@ public class Colosseum {
         Gladiator gladiator2 = combat.getGladiator2();
         announceCombat(gladiator1, gladiator2);
 
-        // Todo
+        Gladiator winner = combat.simulate();
+        Gladiator gladiatorLooser = gladiator1 == winner ? gladiator2 : gladiator1;
 
         displayCombatLog(combat);
-        announceWinnerAndLoser(gladiator1, gladiator2);
-        return gladiator1;
+        announceWinnerAndLoser(winner, gladiatorLooser);
+
+        return winner;
     }
 
     public void welcome() {
@@ -81,15 +102,15 @@ public class Colosseum {
     private void introduceGladiators(List<Gladiator> gladiators) {
         view.display(String.format("\nWe have selected Rome's %d finest warriors for today's Tournament!", gladiators.size()));
         for (Gladiator gladiator: gladiators) {
-            view.display(String.format(" - %s", gladiator));
+            view.display(String.format(" - %s", gladiator.getFullName()));
         }
         view.display("\n\"Ave Imperator, morituri te salutant!\"");
     }
 
     private void announceCombat(Gladiator gladiator1, Gladiator gladiator2) {
         view.display(String.format("\nDuel %s versus %s:", gladiator1.getName(), gladiator2.getName()));
-        view.display(String.format(" - %s", gladiator1));
-        view.display(String.format(" - %s", gladiator2));
+        view.display(String.format(" - %s", gladiator1.getFullName()));
+        view.display(String.format(" - %s", gladiator2.getFullName()));
     }
 
     private void displayCombatLog(Combat combat) {
