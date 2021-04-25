@@ -8,7 +8,6 @@ public abstract class Gladiator {
     private final int baseDex;
     private int level;
     private int currentHp;
-
     /**
      * Constructor for Gladiators
      *
@@ -96,8 +95,8 @@ public abstract class Gladiator {
         return (int) ( this.baseDex * this.getDexMultiplier().value * getLevel());
     }
 
-    public boolean checkIsAlive() {
-        return this.currentHp > 0;
+    public boolean isDead() {
+        return this.currentHp <= 0;
     }
 
     public void decreaseHp(int x) {
