@@ -7,6 +7,7 @@ public abstract class Gladiator {
     private final int baseSp;
     private final int baseDex;
     private int level;
+    private int currentHp;
 
     /**
      * Constructor for Gladiators
@@ -23,6 +24,7 @@ public abstract class Gladiator {
         this.baseSp = baseSp;
         this.baseDex = baseDex;
         this.level = level;
+        this.currentHp = baseHp;
     }
 
     /**
@@ -55,8 +57,7 @@ public abstract class Gladiator {
      * @return the full name
      */
     public String getFullName() {
-        // Todo
-        return name;
+        return this.getClass().getSimpleName() +" "+ name;
     }
 
     public enum Multiplier {
@@ -74,5 +75,34 @@ public abstract class Gladiator {
             return value;
         }
     }
+
+    public void levelUp() {
+        this.level++;
+    }
+
+    public int getLevel(){
+        return this.level;
+    }
+
+    public int getMaxHp(){
+        return (int) ( this.baseHp * this.getHpMultiplier().value * getLevel());
+    }
+
+    public int getMaxSp(){
+        return (int) ( this.baseSp * this.getSpMultiplier().value * getLevel());
+    }
+
+    public int getMaxDex(){
+        return (int) ( this.baseDex * this.getDexMultiplier().value * getLevel());
+    }
+
+    public boolean checkIsAlive() {
+        return this.currentHp > 0;
+    }
+
+    public void decreaseHp(int x) {
+        this.currentHp-=x;
+    }
+
 
 }
