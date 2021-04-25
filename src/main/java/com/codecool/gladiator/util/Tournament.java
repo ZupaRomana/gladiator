@@ -87,8 +87,25 @@ public class Tournament {
      * @param value the value to be added to the tree
      */
     public void add(Contestants value) {
-        // Todo
+        if (leftBranch == null && rightBranch == null) {
+            if (this.contestants == null) {
+                this.contestants = value;
+            } else {
+                leftBranch = new Tournament(value);
+                rightBranch = new Tournament(this.contestants);
+                this.contestants = null;
+            }
+        } else {
+            if (left) {
+                leftBranch.add(value);
+            } else {
+                rightBranch.add(value);
+            }
+            left = !left;
+        }
+        size++;
     }
+
 
     /**
      * Adds multiple values to the tree
