@@ -1,9 +1,12 @@
 package com.codecool.gladiator.model.gladiators;
 
+import com.codecool.gladiator.util.RandomUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Random;
 
 public class GladiatorFactory {
 
@@ -25,8 +28,9 @@ public class GladiatorFactory {
      * @return gladiator name
      */
     private String getRandomName() {
-        // Todo
-        return "Brutus";
+        int randomIndex = RandomUtils.getInstance().getRANDOM().nextInt(names.size());
+        return names.get(randomIndex);
+
     }
 
     /**
@@ -36,7 +40,19 @@ public class GladiatorFactory {
      * @return new Gladiator
      */
     public Gladiator generateRandomGladiator() {
-        // Todo
-        return new Brutal(getRandomName(), 50, 50, 50, 1);
+        int randomInt = RandomUtils.getInstance().getRANDOM().nextInt(5)+1;
+        Random random = RandomUtils.getInstance().getRANDOM();
+        String name = this.getRandomName();
+        int baseHP = random.nextInt(75)+25;
+        int baseSP = random.nextInt(75)+25;
+        int baseDEX = random.nextInt(75)+25;
+        int baseLvl = random.nextInt(5)+1;
+
+        switch (randomInt){
+            case 1: return new Assasin(name,baseHP, baseSP, baseDEX, baseLvl);
+            case 2: return new Brutal(name,baseHP, baseSP, baseDEX, baseLvl);
+            case 3: return new Archer(name,baseHP, baseSP, baseDEX, baseLvl);
+            default: return new Swordsman(name,baseHP, baseSP, baseDEX, baseLvl);
+        }
     }
 }

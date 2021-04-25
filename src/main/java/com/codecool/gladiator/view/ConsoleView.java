@@ -23,8 +23,6 @@ public class ConsoleView implements Viewable {
             } catch (NumberFormatException e) {
                 System.out.println("Enter correct format: ");
             }
-
-
         }
         return number;
     }
